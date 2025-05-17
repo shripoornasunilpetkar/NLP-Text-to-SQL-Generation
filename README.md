@@ -1,53 +1,42 @@
-# NLP Text to SQL Generation
+ Project Description: SQL Generation from Natural Language using T5
+This project fine-tunes a T5-large transformer model to convert natural language questions into SQL queries using structured database schema information. The model was trained and evaluated on the Spider and SQL Create Context datasets.
 
-This project focuses on Natural Language Processing (NLP) techniques to convert natural language queries into SQL statements. The implementation uses advanced language models and NLP techniques to bridge the gap between human language and database queries.
+🛠️ Preprocessing & Input Construction
+Schema and questions were normalized and combined into input strings like:
+translate to SQL: <question> [SEP] <schema>
 
-## Project Overview
+The tokenizer from transformers was used to convert these strings into model-ready format.
 
-The project contains a Jupyter notebook (`NLP02.ipynb`) that demonstrates the implementation of text-to-SQL generation using NLP techniques. This notebook includes:
+Custom functions were written to extract schema details from tables.json.
 
-- Text preprocessing
-- SQL query generation
-- Model implementation
-- Example queries and their SQL translations
+🤖 Model Training
+Model: T5ForConditionalGeneration (pretrained t5-large)
 
-## Getting Started
+Dataset: Spider dataset (xlangai/spider), split 80/20 into training and validation sets.
 
-### Prerequisites
+Training Arguments:
 
-- Python 3.x
-- Jupyter Notebook
-- Required Python packages (will be listed in requirements.txt)
+3 epochs
 
-### Installation
+Batch size = 4
 
-1. Clone the repository:
-```bash
-git clone https://github.com/shripoornasunilpetkar/NLP-Text-to-SQL-Generation.git
-```
+Learning rate = 2e-5
 
-2. Navigate to the project directory:
-```bash
-cd NLP-Text-to-SQL-Generation
-```
+Evaluated every 500 steps
 
-3. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
+Framework: Hugging Face Trainer
 
-## Usage
+🧪 Evaluation
+Model predictions were generated for sample queries using unseen schemas.
 
-Open the Jupyter notebook `NLP02.ipynb` to explore the implementation and run the examples.
+SQL output was compared against manually written ground truth queries.
 
-## Contributing
+Accuracy Calculation: A custom exact-match function compared predicted SQL queries to reference queries.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Final Accuracy Achieved: ~90% on 10 test cases
 
-## License
+✅ Outcome
+The fine-tuned model accurately translated natural language to SQL with structured input.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+It generalized well to both seen and unseen schemas, demonstrating strong SQL generation capabilities.
 
-## Contact
-
-Shripoorna Sunil Petkar - [GitHub Profile](https://github.com/shripoornasunilpetkar) 
